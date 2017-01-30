@@ -8,7 +8,9 @@ namespace Nest
 {
 	public class KeywordAttribute : ElasticsearchDocValuesPropertyAttributeBase, IKeywordProperty
 	{
-		IKeywordProperty Self => this;
+		private IKeywordProperty Self => this;
+
+		public KeywordAttribute() : base(FieldType.Keyword) { }
 
 		double? IKeywordProperty.Boost { get; set; }
 		bool? IKeywordProperty.EagerGlobalOrdinals { get; set; }
@@ -28,6 +30,5 @@ namespace Nest
 		public string NullValue { get { return Self.NullValue; } set { Self.NullValue = value; } }
 		public bool Norms { get { return Self.Norms.GetValueOrDefault(true); } set { Self.Norms = value; } }
 
-		public KeywordAttribute() : base("keyword") { }
 	}
 }

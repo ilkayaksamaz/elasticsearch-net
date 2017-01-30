@@ -39,7 +39,7 @@ namespace Nest
 	[DebuggerDisplay("{DebugDisplay}")]
 	public class KeywordProperty : DocValuesPropertyBase, IKeywordProperty
 	{
-		public KeywordProperty() : base("keyword") { }
+		public KeywordProperty() : base(FieldType.Keyword) { }
 
 		public double? Boost { get; set; }
 		public bool? EagerGlobalOrdinals { get; set; }
@@ -65,7 +65,7 @@ namespace Nest
 		bool? IKeywordProperty.Norms{ get; set; }
 		string IKeywordProperty.NullValue{ get; set; }
 
-		public KeywordPropertyDescriptor() : base("keyword") { }
+		public KeywordPropertyDescriptor() : base(FieldType.Keyword) { }
 
 		public KeywordPropertyDescriptor<T> Boost(double boost) => Assign(a => a.Boost = boost);
 		public KeywordPropertyDescriptor<T> EagerGlobalOrdinals(bool eagerGlobalOrdinals = true) => Assign(a => a.EagerGlobalOrdinals = eagerGlobalOrdinals);
