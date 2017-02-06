@@ -16,12 +16,14 @@ namespace Nest
 		private const double MillisecondsInAnHour = MillisecondsInAMinute * 60;
 		private const double MillisecondsInAMinute = MillisecondsInASecond * 60;
 		private const double MillisecondsInASecond = 1000;
-		private const double NanosecondsInAMillisecond = 100;
+		private const double NanosecondsInATick = 100;
 		private const double MicrosecondsInAMillisecond = 10;
 
 		private static readonly Regex ExpressionRegex =
 			new Regex(@"^(?<factor>[-+]?\d+(?:\.\d+)?)\s*(?<interval>(?:y|w|d|h|m|s|ms|nanos|micros))?$",
 				RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
+
+		private const double FloatingPointTolerance = 0.00001;
 
 		private int? StaticTimeValue { get; }
 
@@ -33,13 +35,20 @@ namespace Nest
 		public TimeUnit? Interval { get; private set; }
 
 		public static implicit operator Time(TimeSpan span) => new Time(span);
-		public static implicit operator Time(double milliseconds) => new Time(milliseconds);
+
+		public static implicit operator Time(double milliseconds)
+		{
+			if (Math.Abs(milliseconds - (-1)) < FloatingPointTolerance) return Time.MinusOne;
+			if (Math.Abs(milliseconds) < FloatingPointTolerance) return Time.MinusOne;
+			return new Time(milliseconds);
+		}
+
 		public static implicit operator Time(string expression) => new Time(expression);
 
 		public static Time MinusOne { get; } = new Time(-1, true);
 		public static Time Zero { get; } = new Time(0, true);
 
-		protected Time(int specialFactor, bool specialValue)
+		private Time(int specialFactor, bool specialValue)
 		{
 			if (!specialValue) throw new ArgumentException("this constructor is only for static TimeValues");
 			this.StaticTimeValue = specialFactor;
@@ -109,7 +118,7 @@ namespace Nest
 				// ReSharper enable PossibleInvalidOperationException
 			};
 
-			if (this.ApproximateMilliseconds == other.ApproximateMilliseconds) return 0;
+			if (Math.Abs(this.ApproximateMilliseconds - other.ApproximateMilliseconds) < FloatingPointTolerance) return 0;
 			if (this.ApproximateMilliseconds < other.ApproximateMilliseconds) return -1;
 			return 1;
 		}
@@ -201,7 +210,7 @@ namespace Nest
 			if (!this.StaticTimeValue.HasValue && other.StaticTimeValue.HasValue) return false;
 			if (this.StaticTimeValue.HasValue && other.StaticTimeValue.HasValue)
 				return this.StaticTimeValue == other.StaticTimeValue;
-			return Math.Abs(this.ApproximateMilliseconds - other.ApproximateMilliseconds) < 0.00001;
+			return Math.Abs(this.ApproximateMilliseconds - other.ApproximateMilliseconds) < FloatingPointTolerance;
 		}
 
 		public override bool Equals(object obj)
@@ -241,7 +250,7 @@ namespace Nest
 				case TimeUnit.Microseconds:
 					return factor / MicrosecondsInAMillisecond;
 				case TimeUnit.Nanoseconds:
-					return factor / NanosecondsInAMillisecond;
+					return factor / NanosecondsInATick;
 				case TimeUnit.Year:
 				case TimeUnit.Month:
 					// Cannot calculate exact milliseconds for non-fixed intervals

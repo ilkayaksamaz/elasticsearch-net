@@ -103,7 +103,7 @@ namespace Tests.CommonOptions.TimeUnit
 
 			/**
 			* Special Time values `0` and `-1` can be compared against eachother
-			* and other Time values although admittingly this is a tad nonsensical.
+			* and other Time values although admittedly this is a tad nonsensical.
 			*/
 			Time.MinusOne.Should().BeLessThan(Time.Zero);
 			Time.Zero.Should().BeGreaterThan(Time.MinusOne);
@@ -120,6 +120,9 @@ namespace Tests.CommonOptions.TimeUnit
 			//the string "-1" is not the same as double -1 which is milliseconds
 			(new Time("-1") == new Time(-1)).Should().BeFalse();
 			(new Time("-1") == Time.MinusOne).Should().BeTrue();
+
+			(new Time("2nanos") == new Time("2nanos")).Should().BeTrue();
+			(new Time("2nanos") != new Time("3nanos")).Should().BeTrue();
 		}
 
 		private class StringParsingTestCases : List<Tuple<string, TimeSpan, string>>
