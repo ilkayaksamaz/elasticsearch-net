@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -86,9 +87,9 @@ namespace Nest
 				case FieldType.LongRange:
 					return jObject.ToObject<LongRangeProperty>();
 				case FieldType.None:
-					break;
+					throw new ArgumentOutOfRangeException(nameof(type), type, $"Deserializing property type: {type}, not supported most likely not a built in property");
 				default:
-					throw new ArgumentOutOfRangeException(nameof(type), type, "mapping property converter does not know this value");
+					throw new ArgumentOutOfRangeException(nameof(type), type, $"mapping property converter does not know this value: {type}");
 			}
 
 			return null;

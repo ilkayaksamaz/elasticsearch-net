@@ -10,6 +10,8 @@ namespace Nest
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum FieldType
 	{
+
+		//TODO rename to Unknown in 6.0
 		/// <summary>
 		/// Default. Will be defined by the type of property return.
 		/// </summary>

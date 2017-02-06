@@ -122,6 +122,14 @@ namespace Tests.Framework
 			}
 		}
 
+		protected void AssertSerializes<T>(T o)
+		{
+			if (string.IsNullOrEmpty(this._expectedJsonString)) return;
+
+			string serialized;
+			this.SerializesAndMatches(o, 0, out serialized);
+
+		}
 		protected T AssertSerializesAndRoundTrips<T>(T o)
 		{
 			if (string.IsNullOrEmpty(this._expectedJsonString)) return default(T);

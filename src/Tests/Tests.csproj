@@ -443,6 +443,7 @@
     <Compile Include="Mapping\Types\Geo\GeoPoint\GeoPointPropertyTests.cs" />
     <Compile Include="Mapping\Types\Geo\GeoShape\GeoShapePropertyTests.cs" />
     <Compile Include="Mapping\Types\Geo\GeoShape\GeoShapeAttributeTests.cs" />
+    <Compile Include="Mapping\Types\Plugins\MappingPlugins.doc.cs" />
     <Compile Include="Mapping\Types\Specialized\Completion\CompletionAttributeTests.cs" />
     <Compile Include="Mapping\Types\Specialized\Completion\CompletionPropertyTests.cs" />
     <Compile Include="Mapping\Types\Specialized\Ip\IpPropertyTests.cs" />

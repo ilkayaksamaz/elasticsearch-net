@@ -53,6 +53,18 @@ namespace Tests.Framework
 			var sut = this.AssertSerializesAndRoundTrips(actual);
 			return new RoundTripper<T>(this.ExpectJson, sut);
 		}
+		public virtual RoundTripper<T> WhenSerializingOnce<T>(T actual)
+		{
+			this.AssertSerializes(actual);
+			return new RoundTripper<T>(this.ExpectJson, actual);
+		}
+		public virtual RoundTripper<T> ThrowsOnRoundtrip<T, TException>(T actual, Action<Exception> assertException) where TException : Exception
+		{
+			Action act = () => this.AssertSerializesAndRoundTrips(actual);
+			var e  = act.ShouldThrow<TException>().Subject.First();
+			assertException(e);
+			return new RoundTripper<T>(this.ExpectJson, actual);
+		}
 		public RoundTripper WhenInferringIdOn<T>(T project) where T : class
 		{
 			this.Client.Infer.Id<T>(project).Should().Be((string)this.ExpectJson);
@@ -110,6 +122,12 @@ namespace Tests.Framework
 			this.Sut = sut;
 		}
 
+		public RoundTripper<T> WhenSerializingOnce(T actual)
+		{
+			this.AssertSerializes(actual);
+			Sut = actual;
+			return this;
+		}
 		public RoundTripper<T> WhenSerializing(T actual)
 		{
 			Sut = this.AssertSerializesAndRoundTrips(actual);
