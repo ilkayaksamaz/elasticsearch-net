@@ -6,11 +6,11 @@ namespace Nest
 	[JsonObject]
 	public interface IGeoSuggestContext : ISuggestContext
 	{
-		[JsonProperty("precision")]
-		IEnumerable<string> Precision { get; set; }
+		//[JsonProperty("precision")]
+		//IEnumerable<string> Precision { get; set; }
 
-		[JsonProperty("neighbors")]
-		bool Neighbors { get; set; }
+		//[JsonProperty("neighbors")]
+		//bool Neighbors { get; set; }
 	}
 
 	[JsonObject]
@@ -18,9 +18,9 @@ namespace Nest
 	{
 		public override string Type => "geo";
 
-		public IEnumerable<string> Precision { get; set; }
+		//public IEnumerable<string> Precision { get; set; }
 
-		public bool Neighbors { get; set; }
+		//public bool Neighbors { get; set; }
 
 	}
 
@@ -28,11 +28,11 @@ namespace Nest
 		where T : class
 	{
 		protected override string Type => "geo";
-		IEnumerable<string> IGeoSuggestContext.Precision { get; set; }
-		bool IGeoSuggestContext.Neighbors { get; set; }
+		//IEnumerable<string> IGeoSuggestContext.Precision { get; set; }
+		//bool IGeoSuggestContext.Neighbors { get; set; }
 
-		public GeoSuggestContextDescriptor<T> Precision(params string[] precisions) => Assign(a => a.Precision = precisions);
+		//public GeoSuggestContextDescriptor<T> Precision(params string[] precisions) => Assign(a => a.Precision = precisions);
 
-		public GeoSuggestContextDescriptor<T> Neighbors(bool neighbors = true) => Assign(a => a.Neighbors = neighbors);
+		//public GeoSuggestContextDescriptor<T> Neighbors(bool neighbors = true) => Assign(a => a.Neighbors = neighbors);
 	}
 }
